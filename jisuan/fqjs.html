@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="pragma" content="no-cache"/>
+        <meta http-equiv="cache-control" content="no-cache"/>
+        <meta http-equiv="expires" content="0"/>
+        <title>信用卡分期计算器</title>
+        <!-- 删除默认的苹果工具栏和菜单栏 -->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <!-- UC应用模式 -->
+        <meta name="browsermode" content="application"/>
+        <!-- QQ应用模式 -->
+        <meta name="x5-page-mode" content="app" />
+        <!-- 禁止用户缩放 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/> 
+        <!-- 禁止自动识别电话号码 -->
+        <meta name="format-detection" content="telephone=no">
+        <!-- 禁止自动识别邮箱 -->
+        <meta name="format-detection" content="email=no">
+        <!-- 引用相关样式表 -->
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <!-- 引用相关JS -->
+        <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+    </head>
+    <body>
+    <section id="page">
+       <div class="header"><h1>信用卡分期计算器</h1><a  onClick="window.history.go(-1);" class="btn-back">返回</a></div>
+        <div id="sjjs-title">
+            <p><br>
+支持一次性支付和分期支付手续费方式</p>
+        </div>
+        <ul class="form-list">
+            <li>
+                <div class="form-left">分期金额：</div>
+                <div class="form-right">
+                    <div class="kuang"><input type="number" pattern="[0-9]*" id="fqje" value="8000">元</div>
+                </div>
+            </li>
+            <li>
+                <div class="form-left">分期期数：</div>
+                <div class="form-right">
+                    <select id="fqqs" class="zs-select">
+                    	<option value="2">2期</option>
+                        <option value="3">3期</option>
+                        <option value="6">6期</option>
+                        <option value="9">9期</option>
+                        <option value="10">10期</option>
+                        <option value="12">12期</option>
+                        <option value="18">18期</option>
+                        <option value="24">24期</option>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="form-left">手续费支付方式：</div>
+                <div class="form-right">
+                    <select id="sxfzffs" class="zs-select">
+                         <option value="1">一次性支付</option>
+                         <option value="2">分期收取</option>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="form-left">分期费率：</div>
+                <div class="form-right">
+                    <div class="kuang"><input type="number" id="fqfl" pattern="\d+(\.\d{ 0, })?" step="0.01"  value="0.75">%</div>
+                </div>
+            </li>
+            <li>
+                <p id="error"></p>
+                <a onClick="getResult();" style="cursor:pointer;"><div class="btn-ok">立即计算</div></a>
+
+                <a onClick="clearResult();"   style="cursor:pointer;"><div class="btn-reset">重新计算</div></a>
+            </li>
+        </ul>
+        <div class="result" style="padding:0;">
+            <h3>输出结果</h3>
+            <ul class="form-list" style="border:none;">
+                <li>
+                    <div class="form-left">第一期还款：</div>
+                    <div class="form-right">
+                        <div class="kuang"><input type="text" id="dyqhk">元</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-left">以后每期还款：</div>
+                    <div class="form-right">
+                        <div class="kuang"><input type="text" id="myhk">元</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-left">支付手续费</div>
+                    <div class="form-right">
+                        <div class="kuang"><input type="text" id="zzflx">元</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-left">还款总额：</div>
+                    <div class="form-right">
+                        <div class="kuang"><input type="text" id="bxzh">元</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+    </body>
+</html>
+<script type="text/javascript">
+$(document).ready(function(){
+    var clientWidth = document.body.clientWidth;
+   // $("html").css("font-size",clientWidth/720*62.5+"%");
+    var new_height = clientWidth/2*0.170;
+    // console.log(clientWidth/2*0.370);
+   // $("select").css({"height":new_height+"px","line-height":new_height+"px"})
+    $("#page").css("display","block");
+});
+function getResult(){
+    var fqje = $("#fqje").val(); //分期金额
+    var fqqs = $("#fqqs").val(); //分期期数
+    var fqfl = $("#fqfl").val(); //分期费率
+    var sxfzffs = $("#sxfzffs").val(); //分期费率
+    // console.log(isNaN(dkje));
+
+    if(isNaN(fqje) || isNaN(fqfl)) {
+        $("#error").html("请输入正确的值！");
+        return false;
+    }
+
+    if(fqje<=0 || fqfl<=0) {
+        $("#error").html("请输入正确的值！");
+        return false;
+    }
+
+    $("#error").html("");
+
+
+    var result = xykfq(fqje, fqfl, fqqs,sxfzffs, 2);
+
+    // console.log(result);
+
+    $("#myhk").val(result.myhk.toFixed(2));
+    $("#dyqhk").val(result.dyqhk.toFixed(2));
+    $("#zzflx").val(result.zzflx.toFixed(2));
+    $("#bxzh").val(result.bxzh.toFixed(2));
+    $(document).scrollTop($(window).height(),0);
+}
+
+function clearResult(){
+    $("#myhk").val("");
+    $("#zzflx").val("");
+    $("#bxzh").val("");
+    $("#fqje").val("8000");
+    $("#fqfl").val("0.75");
+    $("#dyqhk").val("");
+}
+
+//等额本金还款法
+//je贷款金额
+//lv年利率%，如年利率5.6%就为5.6
+//qx还款年限
+//公式:（贷款本金 / 还款月数）+（本金 — 已归还本金累计额）×每月利率
+function xykfq(je, lv, qx,sxf,lvlx, xx){
+    qx=parseInt(qx);
+    je=parseFloat(je);
+    lv=parseFloat(lv);
+    sxffs = parseInt(sxf);	
+    lvlx = parseInt(lvlx);
+
+    //月利率
+    if (lvlx == 2)
+    {
+        ylv = lv * 0.01;
+    }
+    else
+    {
+        ylv = lv / 12 * 0.01;
+    }
+    var fh = new Object();
+    //累计还款总额
+	fh.zzflx=je*ylv*qx
+	fh.bxzh=je+ fh.zzflx;
+	if(sxffs==1){
+		fh.myhk=je/qx;	
+		fh.dyqhk=fh.myhk+fh.zzflx;
+	}else{
+		fh.myhk=fh.bxzh/qx;	
+		fh.dyqhk=fh.myhk;
+	}
+    return fh;
+}
+</script>

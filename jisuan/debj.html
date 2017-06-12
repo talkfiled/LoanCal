@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="pragma" content="no-cache"/>
+        <meta http-equiv="cache-control" content="no-cache"/>
+        <meta http-equiv="expires" content="0"/>
+        <title>等额本金</title>
+        <meta name="keywords" content="费率计算器" />
+        <meta name="description" content="费率计算器" />
+        <!-- 删除默认的苹果工具栏和菜单栏 -->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <!-- UC应用模式 -->
+        <meta name="browsermode" content="application"/>
+        <!-- QQ应用模式 -->
+        <meta name="x5-page-mode" content="app" />
+        <!-- 禁止用户缩放 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/> 
+        <!-- 禁止自动识别电话号码 -->
+        <meta name="format-detection" content="telephone=no">
+        <!-- 禁止自动识别邮箱 -->
+        <meta name="format-detection" content="email=no">
+        <!-- 引用相关样式表 -->
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <!-- 引用相关JS -->
+        <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+    </head>
+    <body>
+    <section id="page">
+<div class="header"><h1>等额本金还款计算器</h1><a onClick="window.history.go(-1);" class="btn-back">返回</a></div>
+        <div id="sjjs-title">
+            <p><br>
+月还本金相同，月还总额逐渐递减</p>
+        </div>
+        <ul class="form-list">
+            <li>
+                <div class="form-left">贷款金额：</div>
+                <div class="form-right">
+                    <div class="kuang"><input type="text" pattern="[0-9\.]*" id="dkje" value="100">万元</div>
+                </div>
+            </li>
+            <li>
+                <div class="form-left">贷款期限：</div>
+                <div class="form-right">
+                    <select id="dkqx" class="zs-select">
+                    	<option value="1">1个月</option>
+                        <option value="2">2个月</option>
+                        <option value="3">3个月</option>
+                        <option value="4">4个月</option>
+                        <option value="5">5个月</option>
+                        <option value="6">6个月</option>
+                        <option value="7">7个月</option>
+                        <option value="8">8个月</option>
+                        <option value="9">9个月</option>
+                        <option value="10">10个月</option>
+                        <option value="11">11个月</option>
+                        <option value="12">12个月</option>
+                        <option value="18">18个月</option>
+                        <option value="24">2年</option>
+                        <option value="36">3年</option>
+                        <option value="60">5年</option>
+                        <option value="120">10年</option>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="form-left">综合月利率：</div>
+                <div class="form-right">
+                    <div class="kuang"><input type="number" id="zhll" pattern="\d+(\.\d{ 0, })?" step="0.01"  value="1.3">%</div>
+                </div>
+            </li>
+            <li>
+                <p id="error"></p>
+                <a onClick="getResult();" style="cursor:pointer;"><div class="btn-ok">立即计算</div></a>
+
+                <a onClick="clearResult();"   style="cursor:pointer;"><div class="btn-reset">重新计算</div></a>
+                
+            </li>
+        </ul>
+        <div class="result" style="padding:0;">
+            <h3>输出结果</h3>
+            <ul class="form-list" style="border:none;">
+                <li>
+                    <div class="form-left">首月还款：</div>
+                    <div class="form-right">
+                        <div class="kuang"><input type="text" id="syhk">元</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-left">每月递减：</div>
+                    <div class="form-right">
+                        <div class="kuang"><input type="text" id="mydj">元</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-left">总支付利息</div>
+                    <div class="form-right">
+                        <div class="kuang"><input type="text" id="zzflx">元</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="form-left">本息总和：</div>
+                    <div class="form-right">
+                        <div class="kuang"><input type="text" id="bxzh">元</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+<div style="display:none;">
+<script src="../../s6.cnzz.com/stat.php-id=5772290&web_id=5772290" language="JavaScript"></script>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Faef1da9339699a0b3a257e3056d1372b' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</div>
+    </body>
+</html>
+<script type="text/javascript">
+$(document).ready(function(){
+    var clientWidth = document.body.clientWidth;
+   // $("html").css("font-size",clientWidth/720*62.5+"%");
+    var new_height = clientWidth/2*0.170;
+    // console.log(clientWidth/2*0.370);
+    //$("select").css({"height":new_height+"px","line-height":new_height+"px"})
+    $("#page").css("display","block"); 
+});
+
+function getResult(){
+    var dkje = $("#dkje").val(); //贷款金额
+    var dkqx = $("#dkqx").val(); //贷款期限
+    var zhll = $("#zhll").val(); //综合利率
+
+    // console.log(isNaN(dkje));
+
+    if(isNaN(dkje) || isNaN(zhll)) {
+        $("#error").html("请输入正确的值！");
+        return false;
+    }
+
+    if(dkje<=0 || zhll<=0) {
+        $("#error").html("请输入正确的值！");
+        return false;
+    }
+
+    $("#error").html("");
+
+    dkje = dkje*10000;
+
+    var test = (dkje/dkqx)+(dkje)*zhll;
+    var test2 = (dkje/dkqx)+(dkje-test)*zhll;
+
+    // $("#syhk").val(test.toFixed(2));
+    // $("#mydj").val((test-test2).toFixed(2));
+    // $("#zzflx").val((test*dkqx-dkje).toFixed(2));
+    // $("#bxzh").val((test*dkqx).toFixed(2));
+
+    var result = debj(dkje, zhll, dkqx, 2, 1);
+    // console.log(result);
+
+    $("#syhk").val(result.xx[0].yhk.toFixed(2));
+    $("#mydj").val(result.mydj.toFixed(2));
+    $("#zzflx").val(result.zlx.toFixed(2));
+    $("#bxzh").val((result.zlx+dkje).toFixed(2));
+    $(document).scrollTop($(window).height(),0);
+}
+
+function clearResult(){
+    $("#myhk").val("");
+    $("#zzflx").val("");
+    $("#bxzh").val("");
+    $("#mydj").val("");
+    $("#syhk").val("");
+    $("#dkje").val("100");
+    $("#zhll").val("1.3");
+}
+
+//等额本金还款法
+//je贷款金额
+//lv年利率%，如年利率5.6%就为5.6
+//qx还款年限
+//公式:（贷款本金 / 还款月数）+（本金 — 已归还本金累计额）×每月利率
+function debj(je, lv, qx, lvlx, xx){
+    qx=parseInt(qx);
+    je=parseFloat(je);
+    lv=parseFloat(lv);
+    lvlx = parseInt(lvlx);
+    xx = parseInt(xx);
+   
+    //月利率
+    if (lvlx == 2)
+    {
+        ylv = lv * 0.01;
+    }
+    else
+    {
+        ylv = lv / 12 * 0.01;
+    }
+  
+    //累计还款总额
+    var hkze=0;
+    var ybj = je / qx;
+
+    var fh = new Object();
+    fh.ybj = ybj;
+
+    var ye = je;
+    var sz = [];
+    for(i = 1; i <= qx; i++)
+    {
+        yhk = je/qx + (je-je*(i-1)/qx)*ylv;//第i月还款额
+        if (i == 1)
+        {
+            fh.syhk = yhk;
+        }
+        if (i == 2)
+        {
+            fh.mydj = fh.syhk - yhk;
+        }
+        hkze = hkze + yhk;
+        ylx = yhk - ybj;
+        ye = ye - ybj;
+    
+        var xj = new Object();
+        xj.bh = i;
+        xj.ylx = ylx;   //月利息
+        xj.yhk = yhk;   //月还款
+        xj.ye = ye;     //余额
+        sz[i-1] = xj;
+    }
+
+    if (xx == 1)
+    {
+        fh.xx = sz;
+    }
+
+    fh.zlx = hkze - je;
+    fh.hkze = hkze;
+    return fh;
+}
+</script>
+

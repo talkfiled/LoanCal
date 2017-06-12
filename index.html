@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html>
+  
+  <head>
+    <title>贷款计算器</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta content="telephone=no" name="format-detection" />
+    <link type="text/css" rel="stylesheet" href="Template/mobile/css/base.css" />
+    <link type="text/css" rel="stylesheet" href="Template/mobile/css/layout.css" />
+    <script type="text/javascript" language="javascript" src="Template/mobile/js/zepto.min.js"></script>
+    <script type="text/javascript" language="javascript" src="Template/mobile/js/prefixfree.min.js"></script>
+    <script type="text/javascript" language="javascript" src="Template/mobile/js/public.js"></script>
+  </head>
+  
+  <body>
+    <div class="header">
+      <h1>贷款计算器</h1>
+      <a class="btn-home" href="index.php-s=-Mobile-index-city-beijing"></a>
+    </div>
+    <div class="content">
+      <div class="info-wrap">
+        <div class="groupList mar-b15">
+          <ul class="ul-group-list-chose ul-group-list-chose-r">
+            <li class="itemChoose">
+              <a href="jisuan/goufang.html">
+                <div class="group-logo">
+                  <img src="Template/calculator/1.png"></div>
+                <div class="group-text">
+                  <h1>购房贷款计算器</h1>
+                  <p>采用最新贷款利率</p>
+                </div>
+              </a>
+            </li>
+            <li class="itemChoose">
+              <a href="jisuan/debx.html">
+                <div class="group-logo">
+                  <img src="Template/calculator/2.png"></div>
+                <div class="group-text">
+                  <h1>等额本息还款计算器</h1>
+                  <p>每月还款额相同</p>
+                </div>
+              </a>
+            </li>
+            <li class="itemChoose">
+              <a href="jisuan/debj.html">
+                <div class="group-logo">
+                  <img src="Template/calculator/3.png"></div>
+                <div class="group-text">
+                  <h1>等额本金还款计算器</h1>
+                  <p>月还本金相同，月还总额逐月递减</p>
+                </div>
+              </a>
+            </li>
+            <li class="itemChoose">
+              <a href="jisuan/xxhb.html">
+                <div class="group-logo">
+                  <img src="Template/calculator/4.png"></div>
+                <div class="group-text">
+                  <h1>先息后本还款计算器</h1>
+                  <p>先还利息，最后还本金</p>
+                </div>
+              </a>
+            </li>
+            <li class="itemChoose">
+              <a href="jisuan/hbfx.html">
+                <div class="group-logo">
+                  <img src="Template/calculator/5.png"></div>
+                <div class="group-text">
+                  <h1>一次性还本付息计算器</h1>
+                  <p>一次性把本金和利息全部还完</p>
+                </div>
+              </a>
+            </li>
+            <li class="itemChoose">
+              <a href="jisuan/fqjs.html">
+                <div class="group-logo">
+                  <img src="Template/calculator/7.png"></div>
+                <div class="group-text">
+                  <h1>信用卡分期计算器</h1>
+                  <p>支持一次性支付和分期支付手续费方式</p>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div></div>
+      </div>
+      <script type="text/javascript" language="javascript" src="Template/mobile/js/api.js"></script>
+      <script type="text/javascript" language="javascript">function openframe(url) {
+          var scaleEnabled = false;
+          if (api.systemType == 'ios') {
+            scaleEnabled = true;
+          }
+          api.openFrame({
+            name: 'main',
+            url: url,
+            showProgress: true,
+            bounces: false,
+            opaque: true,
+            allowEdit: false,
+            bgColor: "#fff",
+            softInputMode: "resize",
+            progress: {
+              type: "default",
+              title: "加载中...",
+              text: "",
+              color: "#45C01A"
+            },
+            //delay:1000,
+            //animation:{type:"movein",subType:"from_right",duration:500},
+            scaleEnabled: scaleEnabled,
+            rect: {
+              x: 0,
+              y: 0,
+              w: api.winWidth,
+              h: api.winHeight
+            }
+          });
+        }
+
+        apiready = function() {
+          var btns = $api.domAll('a');
+          for (i = 0; i < btns.length; i++) {
+            btns[i].index = i;
+            $api.addEvt(btns[i], 'click',
+            function() {
+              var url = $api.attr(btns[this.index], 'href');
+              if (url != null) {
+                event.preventDefault();
+                openframe(url);
+              }
+
+            });
+          }
+        }</script>
+      <div style="display:none;"></div>
+  </body>
+
+</html>
